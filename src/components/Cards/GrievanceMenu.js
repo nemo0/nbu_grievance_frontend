@@ -18,12 +18,16 @@ export default function GrievanceCard(props) {
     <Flex
       bg='#edf3f8'
       _dark={{
-        bg: '#3e3e3e',
+        bg: '#1a202c',
+        opacity: 0.6,
       }}
       p={50}
       w='full'
       alignItems='center'
       justifyContent='center'
+      _hover={{
+        scale: 1.05,
+      }}
     >
       <Box
         w='xs'
@@ -35,6 +39,7 @@ export default function GrievanceCard(props) {
         rounded='lg'
         overflow='hidden'
         mx='auto'
+        boxShadow={'0px 0px 10px rgba(0, 0, 0, 0.6)'}
       >
         <Image
           w='full'
