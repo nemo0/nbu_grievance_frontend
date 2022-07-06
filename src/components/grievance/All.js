@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { useTable, useSortBy } from 'react-table';
+import { Link } from 'react-router-dom';
 
 const ALL_GRIEVANCES_URL = '/grievance';
 
@@ -75,13 +76,11 @@ const AllGrievances = () => {
         accessor: 'grievanceStatus',
       },
       {
-        Header: 'Grievance Description',
-        accessor: 'grievanceDescription',
-      },
-      {
         Header: 'View Grievance',
         accessor: '_id',
-        Cell: (props) => <a href={`/${props._id}`}>Click to view</a>,
+        Cell: ({ cell: { value } }) => (
+          <Link to={`/grievance/${value}`}>Click to view</Link>
+        ),
       },
     ],
     []

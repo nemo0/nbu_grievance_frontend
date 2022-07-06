@@ -16,6 +16,8 @@ import { Routes, Route } from 'react-router-dom';
 
 import HomeAuthenticated from './components/grievance/home';
 import AllGrievances from './components/grievance/All';
+import GrievanceDetails from './components/grievance/Details';
+import UpdateGrievance from './components/grievance/Update';
 
 const ROLES = {
   User: 2001,
@@ -70,6 +72,8 @@ function App() {
             >
               <Route path='grievance' element={<HomeAuthenticated />} />
               <Route path='grievance/all' element={<AllGrievances />} />
+              <Route path='grievance/:id' element={<GrievanceDetails />} />
+              <Route path='grievance/edit/:id' element={<UpdateGrievance />} />
             </Route>
           </Route>
           {/* catch all */}
