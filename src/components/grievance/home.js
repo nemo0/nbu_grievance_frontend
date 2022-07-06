@@ -8,15 +8,19 @@ import { Box, Text, Container, Flex } from '@chakra-ui/react';
 const MENU_ITEMS = [
   {
     title: 'All Grievance',
-    link: '/grievance/all',
+    link: '/grievance/All',
   },
   {
     title: 'My Grievance',
-    link: '/grievance/my',
+    link: '/grievance/My',
   },
   {
     title: 'Create Grievance',
-    link: '/grievance/create',
+    link: '/grievance/Add',
+  },
+  {
+    title: 'All Users',
+    link: '/grievance/users/all',
   },
 ];
 
@@ -24,7 +28,7 @@ const HomeAuthenticated = () => {
   return (
     <>
       <Header />
-      <Container>
+      <Container width={'full'}>
         <Flex margin={'6rem 0'} width={'full'} justifyContent={'space-around'}>
           {MENU_ITEMS.map((item, index) => (
             <GrievanceCard key={index} title={item.title} link={item.link} />

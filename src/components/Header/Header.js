@@ -4,7 +4,6 @@ import {
   Flex,
   Avatar,
   HStack,
-  Link,
   IconButton,
   Button,
   Menu,
@@ -15,10 +14,31 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  Link,
+  Image,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 
-const Links = ['Dashboard', 'Projects', 'Team'];
+import { Link as RouterLink } from 'react-router-dom';
+
+const Links = [
+  {
+    name: 'Home',
+    link: '/grievance',
+  },
+  {
+    name: 'All',
+    link: '/grievance/all',
+  },
+  {
+    name: 'My Grievances',
+    link: '/grievance/my',
+  },
+  {
+    name: 'Create Grievance',
+    link: '/grievance/add',
+  },
+];
 
 const NavLink = ({ children }) => (
   <Link
@@ -29,7 +49,6 @@ const NavLink = ({ children }) => (
       textDecoration: 'none',
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
-    href={'#'}
   >
     {children}
   </Link>
@@ -50,14 +69,22 @@ export default function Header() {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={'center'}>
-            <Box>Logo</Box>
+            <Box>
+              <Image
+                src='https://upload.wikimedia.org/wikipedia/en/b/b2/University_of_North_Bengal_Logo.svg'
+                alt='Logo'
+                height={'8vh'}
+              />
+            </Box>
             <HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}
             >
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+              {Links.map((link, index) => (
+                <NavLink key={index}>
+                  <RouterLink to={link.link}>{link.name}</RouterLink>
+                </NavLink>
               ))}
             </HStack>
           </HStack>
@@ -73,15 +100,17 @@ export default function Header() {
                 <Avatar
                   size={'sm'}
                   src={
-                    'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                    'https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_960_720.png'
                   }
                 />
               </MenuButton>
               <MenuList>
-                <MenuItem>Link 1</MenuItem>
-                <MenuItem>Link 2</MenuItem>
-                <MenuDivider />
-                <MenuItem>Link 3</MenuItem>
+                <MenuItem>
+                  <RouterLink to={'/grievance/profile'}>Profile</RouterLink>
+                </MenuItem>
+                <MenuItem>
+                  <RouterLink to={'/login'}>Log Out</RouterLink>
+                </MenuItem>
               </MenuList>
             </Menu>
           </Flex>
@@ -90,8 +119,10 @@ export default function Header() {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+              {Links.map((link, index) => (
+                <NavLink key={index}>
+                  <RouterLink to={link.link}>{link.name}</RouterLink>
+                </NavLink>
               ))}
             </Stack>
           </Box>

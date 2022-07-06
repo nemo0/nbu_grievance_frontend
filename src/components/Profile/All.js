@@ -19,10 +19,10 @@ import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { useTable, useSortBy } from 'react-table';
 import { Link } from 'react-router-dom';
 
-const ALL_GRIEVANCES_URL = '/grievance';
+const ALL_USERS_URL = '/users/';
 
-const AllGrievances = () => {
-  const [grievances, setGrievances] = useState();
+const AllProfiles = () => {
+  const [users, setUsers] = useState();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,20 +31,20 @@ const AllGrievances = () => {
     let isMounted = true;
     const controller = new AbortController();
 
-    const getGrievances = async () => {
+    const getUsers = async () => {
       try {
-        const response = await axiosPrivate.get(ALL_GRIEVANCES_URL, {
+        const response = await axiosPrivate.get(ALL_USERS_URL, {
           signal: controller.signal,
         });
         console.log(response.data);
-        isMounted && setGrievances(response.data);
+        isMounted && setUsers(response.data);
       } catch (err) {
         console.error(err);
         navigate('/login', { state: { from: location }, replace: true });
       }
     };
 
-    getGrievances();
+    getUsers();
 
     return () => {
       isMounted = false;
@@ -52,34 +52,27 @@ const AllGrievances = () => {
     };
   }, []);
 
-  const data = React.useMemo(() => grievances, [grievances]) || [];
+  const data = React.useMemo(() => users, [users]) || [];
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Grievance Title',
-        accessor: 'grievanceTitle',
+        Header: 'User Name',
+        accessor: 'username',
       },
       {
-        Header: 'Grievance Creator',
-        accessor: 'grievanceCreatedBy',
+        Header: 'User Email',
+        accessor: 'email',
       },
       {
-        Header: 'Grievance Department',
-        accessor: 'grievanceDepartment',
+        Header: 'User Department',
+        accessor: 'department',
       },
+
       {
-        Header: 'Grievance Priority',
-        accessor: 'grievancePriority',
-      },
-      {
-        Header: 'Grievance Status',
-        accessor: 'grievanceStatus',
-      },
-      {
-        Header: 'View Grievance',
+        Header: 'View User',
         accessor: '_id',
         Cell: ({ cell: { value } }) => (
-          <Link to={`/grievance/${value}`}>Click to view</Link>
+          <Link to={`/grievance/profile/${value}`}>Click to view</Link>
         ),
       },
     ],
@@ -143,4 +136,4 @@ const AllGrievances = () => {
   );
 };
 
-export default AllGrievances;
+export default AllProfiles;

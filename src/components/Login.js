@@ -10,6 +10,7 @@ import {
   Checkbox,
   Container,
   Flex,
+  Image,
   Button,
 } from '@chakra-ui/react';
 
@@ -138,6 +139,13 @@ const Login = () => {
         flexDirection={'column'}
       >
         <Box>
+          <Box boxSize={'sm'} display='flex' justifyContent={'center'}>
+            <Image
+              src='https://upload.wikimedia.org/wikipedia/en/b/b2/University_of_North_Bengal_Logo.svg'
+              alt='logo'
+              width={'240px'}
+            />
+          </Box>
           <p
             ref={errRef}
             className={errMsg ? 'errmsg' : 'offscreen'}

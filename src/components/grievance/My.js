@@ -19,9 +19,9 @@ import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { useTable, useSortBy } from 'react-table';
 import { Link } from 'react-router-dom';
 
-const ALL_GRIEVANCES_URL = '/grievance';
+const MY_GRIEVANCES_URL = '/grievance/my';
 
-const AllGrievances = () => {
+const MyGrievances = () => {
   const [grievances, setGrievances] = useState();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const AllGrievances = () => {
 
     const getGrievances = async () => {
       try {
-        const response = await axiosPrivate.get(ALL_GRIEVANCES_URL, {
+        const response = await axiosPrivate.get(MY_GRIEVANCES_URL, {
           signal: controller.signal,
         });
         console.log(response.data);
@@ -143,4 +143,4 @@ const AllGrievances = () => {
   );
 };
 
-export default AllGrievances;
+export default MyGrievances;

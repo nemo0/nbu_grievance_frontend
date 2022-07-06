@@ -18,6 +18,12 @@ import HomeAuthenticated from './components/grievance/home';
 import AllGrievances from './components/grievance/All';
 import GrievanceDetails from './components/grievance/Details';
 import UpdateGrievance from './components/grievance/Update';
+import AddGrievance from './components/grievance/Add';
+import MyGrievances from './components/grievance/My';
+import ProfileDetails from './components/Profile/Profile';
+import AllProfiles from './components/Profile/All';
+import UserProfileDetails from './components/Profile/UserProfile';
+import UpdateProfile from './components/Profile/Update';
 
 const ROLES = {
   User: 2001,
@@ -40,7 +46,7 @@ function App() {
           {/* we want to protect these routes */}
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-              <Route path='/' element={<Home />} />
+              <Route path='/' element={<HomeAuthenticated />} />
             </Route>
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
@@ -49,6 +55,11 @@ function App() {
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
               <Route path='admin' element={<Admin />} />
+              <Route path='grievance/edit/:id' element={<UpdateGrievance />} />
+              <Route
+                path='grievance/profile/edit/:id'
+                element={<UpdateProfile />}
+              />
             </Route>
 
             <Route
@@ -71,9 +82,16 @@ function App() {
               }
             >
               <Route path='grievance' element={<HomeAuthenticated />} />
-              <Route path='grievance/all' element={<AllGrievances />} />
+              <Route path='grievance/All' element={<AllGrievances />} />
+              <Route path='grievance/Add/' element={<AddGrievance />} />
+              <Route path='grievance/My/' element={<MyGrievances />} />
+              <Route path='grievance/profile' element={<ProfileDetails />} />
+              <Route path='grievance/users/all' element={<AllProfiles />} />
               <Route path='grievance/:id' element={<GrievanceDetails />} />
-              <Route path='grievance/edit/:id' element={<UpdateGrievance />} />
+              <Route
+                path='grievance/profile/:id'
+                element={<UserProfileDetails />}
+              />
             </Route>
           </Route>
           {/* catch all */}

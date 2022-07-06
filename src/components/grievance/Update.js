@@ -29,6 +29,11 @@ const UpdateGrievance = () => {
   const location = useLocation();
 
   const errRef = useRef();
+  const titleRef = useRef();
+  const descriptionRef = useRef();
+  const statusRef = useRef();
+  const priorityRef = useRef();
+  const departmentRef = useRef();
 
   useEffect(() => {
     let isMounted = true;
@@ -85,6 +90,33 @@ const UpdateGrievance = () => {
     }
   };
 
+  const updateGrievance = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosPrivate.put(`/grievance/${grievance._id}`, {
+        title: titleRef.current.value,
+        description: descriptionRef.current.value,
+        status: statusRef.current.value,
+        priority: priorityRef.current.value,
+        department: departmentRef.current.value,
+      });
+      console.log(response.data);
+      navigate('/grievance/all');
+    } catch (err) {
+      console.error(err);
+      if (!err?.response) {
+        setErrMsg('No Server Response');
+      } else if (err.response?.status === 400) {
+        setErrMsg('Grievance ID Not Found');
+      } else if (err.response?.status === 204) {
+        setErrMsg('Grievance Not Found');
+      } else {
+        setErrMsg('Something went wrong');
+      }
+      errRef.current.focus();
+    }
+  };
+
   return (
     <>
       <Header />
@@ -99,58 +131,100 @@ const UpdateGrievance = () => {
           New Grievance
         </Heading>
         {grievance ? (
-          <Box margin={'2rem 0'}>
-            <FormControl margin={'1.5rem 0'}>
-              <FormLabel htmlFor='title'>Grievance Title</FormLabel>
-              <Input
-                id='title'
-                type='text'
-                defaultValue={grievance.grievanceTitle}
-              />
-            </FormControl>
-            <FormControl margin={'1.5rem 0'}>
-              <FormLabel htmlFor='description'>Grievance Description</FormLabel>
-              <Textarea
-                id='description'
-                defaultValue={grievance.grievanceDescription}
-              ></Textarea>
-            </FormControl>
-            <FormControl margin={'1.5rem 0'}>
-              <FormLabel htmlFor='department'>Grievance Department</FormLabel>
-              <Input
-                id='department'
-                type='text'
-                defaultValue={grievance.grievanceDepartment}
-              />
-            </FormControl>
-            <FormControl margin={'1.5rem 0'}>
-              <FormLabel htmlFor='staus'>Grievance Status</FormLabel>
-              <Select defaultValue={grievance.grievanceStatus}>
-                <option value={'Open'}>Open</option>
-                <option value={'Processing'}>Processing</option>
-                <option value={'Closed'}>Closed</option>
-              </Select>
-            </FormControl>
-            <FormControl margin={'1.5rem 0'}>
-              <FormLabel htmlFor='priority'>Grievance Priority</FormLabel>
-              <Select defaultValue={grievance.grievancePriority}>
-                <option value={'Low'}>Low</option>
-                <option value={'Medium'}>Medium</option>
-                <option value={'High'}>High</option>
-              </Select>
-            </FormControl>
+          <Box>
+            <Box margin={'2rem 0'}>
+              <FormControl margin={'1.5rem 0'}>
+                <FormLabel htmlFor='title'>Grievance Title</FormLabel>
+                <Input
+                  id='title'
+                  type='text'
+                  defaultValue={grievance.grievanceTitle}
+                  ref={titleRef}
+                />
+              </FormControl>
+              <FormControl margin={'1.5rem 0'}>
+                <FormLabel htmlFor='description'>
+                  Grievance Description
+                </FormLabel>
+                <Textarea
+                  id='description'
+                  defaultValue={grievance.grievanceDescription}
+                  ref={descriptionRef}
+                ></Textarea>
+              </FormControl>
+              <FormControl margin={'1.5rem 0'}>
+                <FormLabel htmlFor='department'>Grievance Department</FormLabel>
+                <Input
+                  id='department'
+                  type='text'
+                  defaultValue={grievance.grievanceDepartment}
+                  ref={departmentRef}
+                />
+              </FormControl>
+              <FormControl margin={'1.5rem 0'}>
+                <FormLabel htmlFor='staus'>Grievance Status</FormLabel>
+                <Select
+                  defaultValue={grievance.grievanceStatus}
+                  ref={statusRef}
+                >
+                  <option value={'Open'}>Open</option>
+                  <option value={'Processing'}>Processing</option>
+                  <option value={'Closed'}>Closed</option>
+                </Select>
+              </FormControl>
+              <FormControl margin={'1.5rem 0'}>
+                <FormLabel htmlFor='priority'>Grievance Priority</FormLabel>
+                <Select
+                  defaultValue={grievance.grievancePriority}
+                  ref={priorityRef}
+                >
+                  <option value={'Low'}>Low</option>
+                  <option value={'Medium'}>Medium</option>
+                  <option value={'High'}>High</option>
+                </Select>
+              </FormControl>
+              <Box>
+                <Text fontSize={'2rem'} fontWeight={'bold'}>
+                  Comments
+                </Text>
+                {grievance.grievanceComments.map((comment, index) => {
+                  return (
+                    <Box key={index}>
+                      <Text>{comment.comment}</Text>
+                      <Text fontSize={'xs'}>by {comment.commentByName}</Text>
+                    </Box>
+                  );
+                })}
+              </Box>
+            </Box>
             <Box>
-              <Text fontSize={'2rem'} fontWeight={'bold'}>
-                Comments
-              </Text>
-              {grievance.grievanceComments.map((comment, index) => {
-                return (
-                  <Box key={index}>
-                    <Text>{comment.comment}</Text>
-                    <Text fontSize={'xs'}>by {comment.commentByName}</Text>
-                  </Box>
-                );
-              })}
+              <Box>
+                <p
+                  ref={errRef}
+                  className={errMsg ? 'errmsg' : 'offscreen'}
+                  aria-live='assertive'
+                >
+                  {errMsg}
+                </p>
+              </Box>
+              <Box
+                display={'flex'}
+                justifyContent={'flex-end'}
+                marginBottom={'2rem'}
+              >
+                {(grievance &&
+                  grievance.grievanceStatus.toLowerCase() === 'open') ||
+                grievance.grievanceStatus.toLowerCase() === 'processing' ? (
+                  <Button onClick={closeGrievance} bgColor={'green'}>
+                    Close Grievance
+                  </Button>
+                ) : (
+                  <Button disabled>Close Grievance</Button>
+                )}
+                <Button onClick={updateGrievance} marginLeft={'1.5rem'}>
+                  Update
+                </Button>
+              </Box>
             </Box>
           </Box>
         ) : (
@@ -158,24 +232,6 @@ const UpdateGrievance = () => {
             <Text>Loading...</Text>
           </Box>
         )}
-        <Box>
-          <p
-            ref={errRef}
-            className={errMsg ? 'errmsg' : 'offscreen'}
-            aria-live='assertive'
-          >
-            {errMsg}
-          </p>
-        </Box>
-        <Box display={'flex'} justifyContent={'flex-end'} marginBottom={'2rem'}>
-          {grievance && grievance.grievanceStatus.toLowerCase() === 'open' ? (
-            <Button onClick={closeGrievance} bgColor={'green'}>
-              Close Grievance
-            </Button>
-          ) : (
-            <Button disabled>Close Grievance</Button>
-          )}
-        </Box>
       </Box>
       <Footer />
     </>
