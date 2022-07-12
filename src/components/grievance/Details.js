@@ -10,6 +10,7 @@ import { useNavigate, useLocation, Link } from 'react-router-dom';
 const GrievanceDetails = () => {
   const { id } = useParams();
   const [grievance, setGrievance] = useState();
+  const [comment, setComment] = useState('');
   const [comments, setComments] = useState();
   const [errMsg, setErrMsg] = useState('');
   const axiosPrivate = useAxiosPrivate();
@@ -28,8 +29,9 @@ const GrievanceDetails = () => {
         const response = await axiosPrivate.get(`/grievance/${id}`, {
           signal: controller.signal,
         });
-        console.log(response.data);
-        isMounted && setGrievance(response.data);
+        // console.log(response.data);
+        const data = await response.data;
+        isMounted && setGrievance(data);
       } catch (err) {
         console.error(err);
         navigate('/', { state: { from: location }, replace: true });
@@ -50,8 +52,10 @@ const GrievanceDetails = () => {
         comment: commentRef.current.value,
       });
       console.log(response.data);
-      navigate(`/grievance/all`);
-      setComments(response.data);
+      const data = await response.data;
+      setComment(data);
+      setComments(data);
+      navigate(`/grievance/${comment._id}`);
       commentRef.current.value = '';
     } catch (err) {
       console.error(err);

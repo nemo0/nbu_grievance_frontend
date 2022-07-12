@@ -24,7 +24,7 @@ export default function GrievanceCard(props) {
           opacity: 0.6,
         }}
         p={50}
-        w='full'
+        width='full'
         alignItems='center'
         justifyContent='center'
         _hover={{

@@ -22,19 +22,23 @@ const MENU_ITEMS = [
     title: 'All Users',
     link: '/grievance/users/all',
   },
+  {
+    title: 'My Department Grievances',
+    link: '/grievance/department/my',
+  },
 ];
 
 const HomeAuthenticated = () => {
   return (
     <>
       <Header />
-      <Container width={'full'}>
-        <Flex margin={'6rem 0'} width={'full'} justifyContent={'space-around'}>
+      <Box width={'full'}>
+        <Flex margin={'2rem'} justifyContent={'space-around'} flexWrap={'wrap'}>
           {MENU_ITEMS.map((item, index) => (
             <GrievanceCard key={index} title={item.title} link={item.link} />
           ))}
         </Flex>
-      </Container>
+      </Box>
       <Footer />
     </>
   );

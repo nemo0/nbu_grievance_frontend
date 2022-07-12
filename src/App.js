@@ -25,6 +25,8 @@ import AllProfiles from './components/Profile/All';
 import UserProfileDetails from './components/Profile/UserProfile';
 import UpdateProfile from './components/Profile/Update';
 
+import MyDepartmentGrievances from './components/grievance/Department';
+
 const ROLES = {
   User: 2001,
   Editor: 1984,
@@ -56,6 +58,10 @@ function App() {
             <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
               <Route path='admin' element={<Admin />} />
               <Route path='grievance/edit/:id' element={<UpdateGrievance />} />
+              <Route
+                path='grievance/department/my'
+                element={<MyDepartmentGrievances />}
+              />
               <Route
                 path='grievance/profile/edit/:id'
                 element={<UpdateProfile />}

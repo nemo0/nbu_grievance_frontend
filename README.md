@@ -12,3 +12,8 @@
 - Run `npm start` to start the server
 
 *NOTE*: Node.js must be installed on your computer.
+
+### TODO:
+- Setup dashboards
+- Design the frontend properly
+- Responsiveness

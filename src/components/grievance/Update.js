@@ -101,7 +101,9 @@ const UpdateGrievance = () => {
         department: departmentRef.current.value,
       });
       console.log(response.data);
-      navigate('/grievance/all');
+      const data = await response.data;
+      setGrievance(data);
+      navigate(`/grievance/${data._id}`);
     } catch (err) {
       console.error(err);
       if (!err?.response) {
